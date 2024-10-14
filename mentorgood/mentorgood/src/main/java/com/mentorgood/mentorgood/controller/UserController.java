@@ -1,7 +1,6 @@
 package com.mentorgood.mentorgood.controller;
 
 import com.mentorgood.mentorgood.entity.User;
-import com.mentorgood.mentorgood.response.AuthenticationResponse;
 import com.mentorgood.mentorgood.response.ResponseData;
 import com.mentorgood.mentorgood.service.UserService;
 import lombok.AccessLevel;
@@ -28,7 +27,7 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseData<List<User>>> getAllUsers(){
-        var result = userService.getUsers();
+        var result = userService.getAllUsers();
         ResponseData<List<User>> responseData = new ResponseData<>();
         responseData.setCode(HttpStatus.OK.value());
         responseData.setResult(result);

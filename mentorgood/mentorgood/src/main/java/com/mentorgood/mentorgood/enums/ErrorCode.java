@@ -13,6 +13,7 @@ public enum ErrorCode {
     UNKNOWN(9999, "Uncategorized error"),
     USER_NOT_EXISTED(1002, "User not existed"),
     UNAUTHENTICATED(1003, "Unauthenticated"),
+    USERNAME_EXISTED(1004, "Username already existed")
     ;
 
 
