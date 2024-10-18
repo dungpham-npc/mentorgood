@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Pagination } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import MentorCard from "./MentorCard";
 
@@ -18,7 +18,7 @@ export default function MentorList() {
   };
 
   return (
-    <div className="pt-10 max-w-full px-20 flex items-center justify-center flex-col">
+    <div className="pt-10 max-w-full px-20 flex items-center justify-center flex-col mb-24">
       <div className="self-start flex items-center justify-between w-full mb-3">
         <div className="">
           <p className="ml-5 text-3xl mb-3">Tất cả</p>
@@ -58,6 +58,7 @@ export default function MentorList() {
         <MentorCard />
         <MentorCard />
       </div>
+      <Pagination className="self-center mt-10" total={10} initialPage={1} />
     </div>
   );
 }

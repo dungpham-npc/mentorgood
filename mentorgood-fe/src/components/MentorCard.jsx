@@ -1,7 +1,10 @@
 import { User, Card, CardHeader, CardBody, CardFooter, Button } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 export default function MentorCard() {
   const skills = ["Java", "Senior", "7+ years experience"];
+
+  const navigate = useNavigate();
 
   return (
     <div className="size-full">
@@ -38,11 +41,11 @@ export default function MentorCard() {
             <div className="flex items-center justify-between gap-4">
                 <div className="flex gap-1">
                     <p className="font-bold text-default-400 text-small">26</p>
-                    <p className="text-default-400 text-small">Reviews</p>
+                    <p className="text-default-400 text-small">Đánh giá</p>
                 </div>
                 <div className="flex gap-1">
                     <p className="font-bold text-default-400 text-small">30</p>
-                    <p className="text-default-400 text-small">Sessions</p>
+                    <p className="text-default-400 text-small">Phiên cố vấn</p>
                 </div>
             </div>
           </div>
@@ -57,8 +60,8 @@ export default function MentorCard() {
 
         <CardFooter className="flex justify-end">
           <div className="flex gap-3 p-2">
-            <Button color="primary">Đặt lịch hẹn</Button>
-            <Button>Xem trang cá nhân</Button>
+            <Button color="primary" size="lg" onClick={() => navigate("/request")}>Đặt lịch hẹn</Button>
+            <Button size="lg" onClick={() => { navigate("/mentors/Jane Doe"); window.scrollTo(0, 0);}}>Xem hồ sơ</Button>
           </div>
         </CardFooter>
       </Card>

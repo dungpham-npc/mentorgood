@@ -8,7 +8,7 @@ export default function SuggestionCard() {
       <Card className="w-full h-full">
         <CardHeader className="justify-between">
           <User
-            name="Jane Doe"
+            name={<a className="text-lg font-medium cursor-pointer" href="/mentors/Jane Doe">Jane Doe</a>}
             description={skills.join(" • ")}
             avatarProps={{
               src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
@@ -42,11 +42,11 @@ export default function SuggestionCard() {
         <CardFooter className="gap-3">
           <div className="flex gap-1">
             <p className="font-bold text-default-400 text-small">26</p>
-            <p className="text-default-400 text-small">Reviews</p>
+            <p className="text-default-400 text-small">Đánh giá</p>
           </div>
           <div className="flex gap-1">
             <p className="font-bold text-default-400 text-small">30</p>
-            <p className="text-default-400 text-small">Sessions</p>
+            <p className="text-default-400 text-small">Phiên cố vấn</p>
           </div>
         </CardFooter>
       </Card>
