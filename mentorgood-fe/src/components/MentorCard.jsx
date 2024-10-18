@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { User, Card, CardHeader, CardBody, CardFooter, Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,8 +13,8 @@ export default function MentorCard() {
         <CardHeader className="justify-between">
           <div className="size-lg text-lg pl-2 pt-1">
             <User
-                name={<span className="text-2xl">Jane Doe</span>}
-                description={<span className="text-2xl">{skills.join(" • ")}</span>}
+                name={<span className="text-xl">Jane Doe</span>}
+                description={<span className="text-xl">{skills.join(" • ")}</span>}
                 avatarProps={{
                     src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
                     size: "lg"
