@@ -61,14 +61,15 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
-        var token = generateToken(request.getUsername());
+        var accessToken = generateToken(request.getUsername());
+        var refreshToken = generateRefreshToken(request.getUsername());
         return AuthenticationResponse.builder()
-                .token(token)
+                .accessToken(accessToken)
                 .authenticated(true)
                 .build();
     }
 
-    private String generateToken(String username) throws JOSEException {
+    public String generateToken(String username) throws JOSEException {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
@@ -76,7 +77,7 @@ public class AuthenticationService {
                 .issuer("localhost:8080")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(2, ChronoUnit.MINUTES).toEpochMilli()
                 ))
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -85,5 +86,41 @@ public class AuthenticationService {
         jwsObject.sign(new MACSigner(SIGNER_KEY));
 
         return jwsObject.serialize();
+    }
+
+    public String generateRefreshToken(String username) throws JOSEException {
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .subject(username)
+                .issuer("localhost:8080")
+                .issueTime(new Date())
+                .expirationTime(new Date(
+                        Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli() // Refresh token valid for 7 days
+                ))
+                .build();
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+        JWSObject jwsObject = new JWSObject(header, payload);
+
+        jwsObject.sign(new MACSigner(SIGNER_KEY));
+
+        return jwsObject.serialize();
+    }
+
+    public AuthenticationResponse refreshToken(String refreshToken) throws JOSEException, ParseException {
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+        SignedJWT signedJWT = SignedJWT.parse(refreshToken);
+
+        if (!signedJWT.verify(verifier) || signedJWT.getJWTClaimsSet().getExpirationTime().before(new Date())) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+
+        String username = signedJWT.getJWTClaimsSet().getSubject();
+        var newAccessToken = generateToken(username);
+
+        return AuthenticationResponse.builder()
+                .accessToken(newAccessToken)
+                .authenticated(true)
+                .build();
     }
 }

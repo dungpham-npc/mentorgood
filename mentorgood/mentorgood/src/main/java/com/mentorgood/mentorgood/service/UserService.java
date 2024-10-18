@@ -6,6 +6,7 @@ import com.mentorgood.mentorgood.enums.Role;
 import com.mentorgood.mentorgood.exception.AppException;
 import com.mentorgood.mentorgood.repository.UserRepository;
 import com.mentorgood.mentorgood.request.UserRegistrationRequest;
+import com.mentorgood.mentorgood.response.MentorInfoResponse;
 import com.mentorgood.mentorgood.response.UserInfoResponse;
 import com.mentorgood.mentorgood.response.UserRegistrationResponse;
 import lombok.AccessLevel;
@@ -29,7 +30,7 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     ModelMapper mapper;
 
-    public UserRegistrationResponse addMentee(UserRegistrationRequest request){
+    public UserRegistrationResponse registerMentee(UserRegistrationRequest request){
         if (repository.findByUsername(request.getUsername()) != null)
             throw new AppException(ErrorCode.USERNAME_EXISTED);
 
@@ -43,12 +44,11 @@ public class UserService {
         repository.save(newUser);
 
         return UserRegistrationResponse.builder()
-                .email(newUser.getEmail())
                 .username(newUser.getUsername())
                 .build();
     }
 
-    public UserRegistrationResponse addMentor(UserRegistrationRequest request){
+    public UserRegistrationResponse registerMentor(UserRegistrationRequest request){
         if (repository.findByUsername(request.getUsername()) != null)
             throw new AppException(ErrorCode.USERNAME_EXISTED);
 
@@ -60,7 +60,6 @@ public class UserService {
         newUser.setRole(Role.Mentor);
         repository.save(newUser);
         return UserRegistrationResponse.builder()
-                .email(newUser.getEmail())
                 .username(newUser.getUsername())
                 .build();
     }
@@ -86,10 +85,16 @@ public class UserService {
         repository.save(oldUser);
     }
 
-    public List<UserInfoResponse> getAllMentors() {
+    public List<MentorInfoResponse> getAllMentors() {
         return repository.findAll().stream()
                 .filter(user -> user.getRole() == Role.Mentor)
-                .map(user -> mapper.map(user, UserInfoResponse.class))
+                .map(user -> {
+                    MentorInfoResponse response = mapper.map(user, MentorInfoResponse.class);
+                    response.setStarRating(calculateMentorStarRating());
+                    response.setNumberOfReviews(getMentorNumberOfReviews());
+                    response.setNumberOfSessionParticipated(getMentorNumberOfSessionsParticipated());
+                    return response;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -98,6 +103,18 @@ public class UserService {
                 .filter(user -> user.getRole() == Role.Mentee)
                 .map(user -> mapper.map(user, UserInfoResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    private double calculateMentorStarRating(){
+        return Double.parseDouble("4.97");
+    }
+
+    private int getMentorNumberOfReviews(){
+        return 10;
+    }
+
+    private int getMentorNumberOfSessionsParticipated(){
+        return 10;
     }
 
 }

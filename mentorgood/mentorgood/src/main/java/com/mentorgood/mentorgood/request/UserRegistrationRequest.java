@@ -12,5 +12,4 @@ import lombok.experimental.FieldDefaults;
 public class UserRegistrationRequest {
     String username;
     String password;
-    String email;
 }

@@ -1,6 +1,7 @@
 package com.mentorgood.mentorgood.controller;
 
 import com.mentorgood.mentorgood.entity.User;
+import com.mentorgood.mentorgood.response.MentorInfoResponse;
 import com.mentorgood.mentorgood.response.ResponseData;
 import com.mentorgood.mentorgood.response.UserInfoResponse;
 import com.mentorgood.mentorgood.service.UserService;
@@ -37,9 +38,9 @@ public class UserController {
 
     @GetMapping("/mentors")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResponseData<List<UserInfoResponse>>> getAllMentors(){
+    public ResponseEntity<ResponseData<List<MentorInfoResponse>>> getAllMentors(){
         var result = userService.getAllMentors();
-        ResponseData<List<UserInfoResponse>> responseData = new ResponseData<>();
+        ResponseData<List<MentorInfoResponse>> responseData = new ResponseData<>();
         responseData.setCode(HttpStatus.OK.value());
         responseData.setResult(result);
 

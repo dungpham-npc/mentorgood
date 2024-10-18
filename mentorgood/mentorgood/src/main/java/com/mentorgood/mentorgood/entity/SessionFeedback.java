@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "session_feedback")
+@Table(name = "sessionfeedback")
 public class SessionFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,6 @@ public class SessionFeedback {
     @Column(name = "Rating")
     private int rating;
 
-    @Column(name = "Comments")
-    private String comments;
+    @Column(name = "Comment")
+    private String comment;
 }
