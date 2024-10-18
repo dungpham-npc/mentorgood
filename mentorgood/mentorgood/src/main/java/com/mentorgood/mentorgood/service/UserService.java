@@ -6,6 +6,7 @@ import com.mentorgood.mentorgood.enums.Role;
 import com.mentorgood.mentorgood.exception.AppException;
 import com.mentorgood.mentorgood.repository.UserRepository;
 import com.mentorgood.mentorgood.request.UserRegistrationRequest;
+import com.mentorgood.mentorgood.response.UserInfoResponse;
 import com.mentorgood.mentorgood.response.UserRegistrationResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -78,12 +80,24 @@ public class UserService {
 
         if (!newUser.getName().equals(oldUser.getName()))
             oldUser.setName(newUser.getName());
-        if (!newUser.getAvailability().equals(oldUser.getAvailability()))
-            oldUser.setAvailability(newUser.getAvailability());
         if (!newUser.getGender().equals(oldUser.getGender()))
             oldUser.setGender(newUser.getGender());
 
         repository.save(oldUser);
+    }
+
+    public List<UserInfoResponse> getAllMentors() {
+        return repository.findAll().stream()
+                .filter(user -> user.getRole() == Role.Mentor)
+                .map(user -> mapper.map(user, UserInfoResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserInfoResponse> getAllMentees() {
+        return repository.findAll().stream()
+                .filter(user -> user.getRole() == Role.Mentee)
+                .map(user -> mapper.map(user, UserInfoResponse.class))
+                .collect(Collectors.toList());
     }
 
 }

@@ -40,6 +40,9 @@ public class User {
     @Column(name = "Gender")
     private Gender gender;
 
-    @Column(name = "Availability")
-    private String availability;
+    @Column(name = "SelfShortDescription")
+    private String shortDescription;
+
+    @Column(name = "Bio")
+    private String bio;
 }
